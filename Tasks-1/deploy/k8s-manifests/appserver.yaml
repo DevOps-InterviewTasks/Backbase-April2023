@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: tomcat
+  labels:
+    app.kubernetes.io/name: proxyfortomcat
+spec:
+  containers:
+  - name: tomcat
+    image: gaffoor/my-tomcat:v1
+    ports:
+      - containerPort: 8080
+        name: http-app-svc
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tomcat-service
+spec:
+  selector:
+    app.kubernetes.io/name: proxyfortomcat
+  ports:
+  - name: name-of-service-port
+    protocol: TCP
+    port: 8090
+    targetPort: http-app-svc
+  type: LoadBalancer
